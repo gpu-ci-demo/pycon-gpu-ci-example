@@ -35,7 +35,9 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v6.0.2
-      - run: python -m build -v --wheel
+      - run: |
+          source activate gpu_build
+          python -m build -v --wheel
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: python-wheel
