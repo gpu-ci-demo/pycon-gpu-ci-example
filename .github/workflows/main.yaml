@@ -1,0 +1,20 @@
+name: Example GPU CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build wheel
+    runs-on: ubuntu-latest
+    container:
+      image: nvidia/cuda:13.1.2-devel-rockylinux8
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - run: python -m build -v --wheel
