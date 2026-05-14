@@ -62,3 +62,25 @@ jobs:
         with:
           name: python-wheel-patched
           path: wheelhouse/example-*.whl
+
+  test-wheel:
+    name: Test wheel
+    needs: patch-wheel
+    runs-on:
+      group: cuda-gpu-runner-group
+    container:
+      # Use a modified version of nvidia/cuda container
+      image: ghcr.io/gpu-ci-demo/example_gpu_ci:cuda_test
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: python-wheel-patched
+      - name: Run pytests
+        run: |
+          source activate gpu_test
+          pip install ./example-*.whl
+          pytest -v tests/
