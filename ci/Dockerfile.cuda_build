@@ -1,3 +1,4 @@
+# nvidia/cuda container, with some extra software installed
 FROM nvcr.io/nvidia/cuda:13.1.2-devel-rockylinux8
 ARG ARCH=x86_64
 ARG MINIFORGE_VERSION=25.11.0-1
@@ -6,11 +7,12 @@ ARG CMAKE_VERSION=4.1.0
 SHELL ["/bin/bash", "-c"]
 
 ENV PATH=/opt/miniforge/bin:/usr/local/ninja:$PATH
+# Use GCC Toolset 10, which lets us use GCC 10 on Rockylinux 8
+# (Rockylinux 8 ships with GCC 8.5 by default.)
 ENV CC=/opt/rh/gcc-toolset-10/root/usr/bin/gcc
 ENV CXX=/opt/rh/gcc-toolset-10/root/usr/bin/c++
 ENV CPP=/opt/rh/gcc-toolset-10/root/usr/bin/cpp
 ENV CUDAHOSTCXX=/opt/rh/gcc-toolset-10/root/usr/bin/c++
-ENV GOSU_VERSION=1.10
 
 RUN \
     dnf -y update && \
