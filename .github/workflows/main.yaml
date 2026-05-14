@@ -19,6 +19,10 @@ permissions:
 env:
   WHEEL_TAG: manylinux_2_28_x86_64
 
+defaults:
+  run:
+    shell: bash -l {0}
+
 jobs:
   build-wheel:
     name: Build wheel
@@ -74,6 +78,7 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+      options: "--gpus all"
     steps:
       - uses: actions/checkout@v6.0.2
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
