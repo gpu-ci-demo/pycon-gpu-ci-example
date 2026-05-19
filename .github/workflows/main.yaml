@@ -46,6 +46,7 @@ jobs:
         uses: pypa/cibuildwheel@v3.2.1
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: "ghcr.io/gpu-ci-demo/manylinux_2_28_x86_64_12_9:latest"
+          CIBW_BUILD: "cp312-manylinux_x86_64"
 
       - name: Upload wheels
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
