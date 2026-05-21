@@ -18,13 +18,9 @@ pytest -v tests
 * **containers.yaml**: Build two Docker containers, to be used for building and testing the Python wheel.
   The Dockerfile definitions are found in the ``ci/`` subdirectory. Once the containers are built,
   they are pushed to the GitHub Packages registry.
-  - ``cuda_build``: Rockylinux 8 based container, to be used for building the wheel
   - ``cuda_test``: Ubuntu 24.04 based container, to be used for testing the wheel
 * **main.yaml**: Performs the following steps in order.
-  1. Build the Python wheel, inside the ``cuda_build`` container.
-  2. Patch the Python wheel, inside the container ``quay.io/pypa/manylinux_2_28_x86_64``.
-     The patching ensures that the wheel is compatible with a wide range of Linux environments.
-     See [the manylinux standard](https://github.com/pypa/manylinux) for more details.
+  1. Build the Python wheel using [cibuildwheel](https://github.com/pypa/cibuildwheel).
   3. Test the Python wheel, inside the ``cuda_test`` container.
 
 ## Next step: Configure GitHub organization settings
