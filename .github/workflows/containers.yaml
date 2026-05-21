@@ -21,7 +21,6 @@ jobs:
       fail-fast: false
       matrix:
         container_tag:
-          - cuda_build
           - cuda_test
     steps:
       - name: Checkout repository
