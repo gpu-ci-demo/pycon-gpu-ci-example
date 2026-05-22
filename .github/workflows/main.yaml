@@ -71,5 +71,6 @@ jobs:
       - name: Run pytests
         run: |
           source activate gpu_test
+          python --version
           python -m pip install ./example-*.whl
           python -m pytest -v tests/
