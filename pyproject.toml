@@ -9,3 +9,11 @@ version = "0.0.1"
 [tool.scikit-build]
 cmake.source-dir = "example"
 wheel.py-api = "cp312"
+install.strip = false
+
+# Use abi3audit to catch issues with Limited API wheels
+[tool.cibuildwheel.linux]
+repair-wheel-command = [
+  "auditwheel repair -w {dest_dir} {wheel}",
+  "pipx run abi3audit --strict --report --verbose {wheel}",
+]

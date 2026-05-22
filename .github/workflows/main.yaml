@@ -16,9 +16,6 @@ permissions:
   contents: read
   packages: read
 
-env:
-  WHEEL_TAG: manylinux_2_28_x86_64
-
 defaults:
   run:
     shell: bash -l {0}
