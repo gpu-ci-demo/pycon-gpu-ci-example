@@ -14,4 +14,5 @@ RUN \
     # Install Miniforge
     wget -nv -O conda.sh https://github.com/conda-forge/miniforge/releases/download/$MINIFORGE_VERSION/Miniforge3-$MINIFORGE_VERSION-Linux-${ARCH}.sh && \
     bash conda.sh -b -p /opt/miniforge
-RUN mamba create -y -n gpu_test python=3.14 numpy pytest cuda-bindings=13.1 cuda-version=13.1
+# Remove python_abi when https://github.com/conda/conda-build/issues/5843 is resolved
+RUN mamba create -y -n gpu_test python=3.14 python_abi=3.14=*_cp314 numpy pytest cuda-bindings=13.1 cuda-version=13.1
