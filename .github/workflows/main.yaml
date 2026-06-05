@@ -23,11 +23,16 @@ defaults:
 jobs:
   build-wheels:
     name: Build wheels
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.target.runner }}
     strategy:
       matrix:
         manylinux-base: [manylinux_2_28, manylinux_2_34]
         cuda-version: [12_9, 13_1]
+        target:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v6
         with:
@@ -40,12 +45,14 @@ jobs:
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: >-
             quay.io/manylinux_cuda/${{ matrix.manylinux-base }}_x86_64_cuda${{ matrix.cuda-version }}:latest
-          CIBW_BUILD: cp312-manylinux_x86_64
+          CIBW_MANYLINUX_AARCH64_IMAGE: >-
+            quay.io/manylinux_cuda/${{ matrix.manylinux-base }}_aarch64_cuda${{ matrix.cuda-version }}:latest
+          CIBW_BUILD: cp312-manylinux_${{ matrix.target.arch }}
 
       - name: Upload wheels
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: python-wheel-${{ matrix.manylinux-base }}-cuda${{ matrix.cuda-version }}
+          name: python-wheel-${{ matrix.manylinux-base }}-${{ matrix.target.arch }}-cuda${{ matrix.cuda-version }}
           path: ./wheelhouse/*.whl
 
   test-wheel:
@@ -64,7 +71,7 @@ jobs:
       - uses: actions/checkout@v6.0.2
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
-          name: python-wheel-manylinux_2_34-cuda13_1
+          name: python-wheel-manylinux_2_34-x86_64-cuda13_1
       - name: Run pytests
         run: |
           source activate gpu_test
