@@ -35,18 +35,11 @@ jobs:
 
       - uses: actions/setup-python@v6
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.2.1
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: >-
-            ghcr.io/gpu-ci-demo/${{ matrix.manylinux-base }}_x86_64_cuda${{ matrix.cuda-version }}:latest
+            quay.io/manylinux_cuda/${{ matrix.manylinux-base }}_x86_64_cuda${{ matrix.cuda-version }}:latest
           CIBW_BUILD: cp312-manylinux_x86_64
 
       - name: Upload wheels
